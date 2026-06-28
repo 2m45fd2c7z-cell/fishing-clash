@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Fishing Clash: Idle Catch RPG</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div id="game-root">
+
+  <!-- ══ AUTH SCREEN ══ -->
+  <div id="auth-screen">
+    <div class="auth-logo">🎣</div>
+    <div class="auth-game-title">FISHING CLASH</div>
+    <div class="auth-tagline">IDLE CATCH RPG · CAST. CATCH. CONQUER.</div>
+    <div class="auth-panel">
+      <div class="auth-tabs">
+        <button class="auth-tab active" id="tab-login">LOGIN</button>
+        <button class="auth-tab" id="tab-register">REGISTER</button>
+      </div>
+      <div id="form-login" style="display:flex;flex-direction:column;gap:10px">
+        <div class="auth-field-wrap">
+          <div class="auth-field-label">EMAIL</div>
+          <input class="auth-input" id="login-user" type="email" placeholder="your@email.com" autocomplete="email" spellcheck="false">
+        </div>
+        <div class="auth-field-wrap">
+          <div class="auth-field-label">PASSWORD</div>
+          <input class="auth-input" id="login-pass" type="password" placeholder="Enter password" autocomplete="current-password">
+        </div>
+        <div class="auth-msg" id="login-msg"></div>
+        <button class="auth-btn" id="btn-login">🎮 PLAY NOW</button>
+      </div>
+      <div id="form-register" style="display:none;flex-direction:column;gap:10px">
+        <div class="auth-field-wrap">
+          <div class="auth-field-label">USERNAME</div>
+          <input class="auth-input" id="reg-user" type="text" placeholder="Choose a username (3–20 chars)" spellcheck="false" autocomplete="off">
+        </div>
+        <div class="auth-field-wrap">
+          <div class="auth-field-label">EMAIL</div>
+          <input class="auth-input" id="reg-email" type="email" placeholder="your@email.com" autocomplete="email">
+        </div>
+        <div class="auth-field-wrap">
+          <div class="auth-field-label">PASSWORD</div>
+          <input class="auth-input" id="reg-pass" type="password" placeholder="Choose a password (6+ chars)" autocomplete="new-password">
+        </div>
+        <div class="auth-msg" id="reg-msg"></div>
+        <button class="auth-btn" id="btn-register">✨ CREATE ACCOUNT</button>
+      </div>
+      <div class="auth-divider">OR</div>
+      <button class="auth-btn guest-btn" id="btn-guest">👤 PLAY AS GUEST</button>
+    </div>
+  </div>
+
+  <!-- ══ UPGRADE MODAL ══ -->
+  <div id="upgrade-modal">
+    <div class="um-panel">
+      <div class="um-title">🔐 SAVE YOUR PROGRESS</div>
+      <div class="um-sub">Create a free account to keep your progress forever.</div>
+      <div class="auth-field-wrap">
+        <div class="auth-field-label">USERNAME</div>
+        <input class="auth-input" id="up-user" type="text" placeholder="Choose a username" spellcheck="false" autocomplete="off">
+      </div>
+      <div class="auth-field-wrap">
+        <div class="auth-field-label">EMAIL</div>
+        <input class="auth-input" id="up-email" type="email" placeholder="your@email.com" autocomplete="email">
+      </div>
+      <div class="auth-field-wrap">
+        <div class="auth-field-label">PASSWORD</div>
+        <input class="auth-input" id="up-pass" type="password" placeholder="Choose a password (6+ chars)" autocomplete="new-password">
+      </div>
+      <div class="um-msg" id="up-msg"></div>
+      <button class="auth-btn" id="btn-upgrade-account">💾 SAVE MY ACCOUNT</button>
+      <button class="um-close" id="btn-close-upgrade">KEEP PLAYING AS GUEST</button>
+    </div>
+  </div>
+
+  <!-- ══ FISHING SCENE ══ -->
+  <div id="fishing-scene">
+    <div id="sky"><div id="sun"></div></div>
+    <svg id="bg-mountains" viewBox="0 0 400 80" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+      <defs>
+        <linearGradient id="bmFar" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#7a3a60" stop-opacity=".9"/>
+          <stop offset="100%" stop-color="#4a2040" stop-opacity="1"/>
+        </linearGradient>
+        <linearGradient id="bmNear" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#4a2848"/>
+          <stop offset="100%" stop-color="#2a1228"/>
+        </linearGradient>
+      </defs>
+      <path d="M-5,80 L25,38 Q45,20 65,34 L95,52 Q118,36 148,18 Q168,6 190,20 L218,40 Q242,24 268,12 Q290,4 312,18 L338,38 Q358,24 385,34 L410,42 L410,80 Z" fill="url(#bmFar)"/>
+      <path d="M148,18 Q168,6 190,20 L180,28 Q168,14 158,26 Z" fill="rgba(255,220,180,.4)"/>
+      <path d="M268,12 Q290,4 312,18 L300,26 Q290,10 278,22 Z" fill="rgba(255,220,180,.4)"/>
+      <path d="M-5,80 L18,54 Q40,32 70,48 L105,62 Q130,46 162,34 Q182,26 205,38 L232,56 Q255,40 285,30 Q308,22 335,40 L364,54 Q382,42 410,50 L410,80 Z" fill="url(#bmNear)"/>
+    </svg>
+    <svg id="mid-hills" viewBox="0 0 400 50" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+      <defs>
+        <linearGradient id="hillG" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#2a3820"/>
+          <stop offset="100%" stop-color="#141c10"/>
+        </linearGradient>
+      </defs>
+      <path d="M-5,50 Q20,22 55,34 Q85,44 118,26 Q148,12 182,28 Q212,42 248,24 Q278,10 315,28 Q348,42 388,22 L410,26 L410,50 Z" fill="url(#hillG)"/>
+    </svg>
+    <svg id="near-treeline" viewBox="0 0 400 36" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+      <g fill="#1a2810">
+        <polygon points="0,36  10,8  20,36"/><polygon points="8,36  19,14 30,36"/>
+        <polygon points="18,36 30,6  42,36"/><polygon points="30,36 42,16 54,36"/>
+        <polygon points="42,36 54,10 66,36"/><polygon points="254,36 266,14 278,36"/>
+        <polygon points="268,36 280,8  292,36"/><polygon points="282,36 295,16 308,36"/>
+        <polygon points="296,36 310,6  324,36"/><polygon points="312,36 326,14 340,36"/>
+        <polygon points="328,36 342,10 356,36"/><polygon points="344,36 358,16 372,36"/>
+        <polygon points="360,36 375,8  390,36"/><polygon points="376,36 392,14 408,36"/>
+      </g>
+    </svg>
+    <div id="water-area"><canvas id="water-canvas"></canvas></div>
+    <div id="horizon-glow"></div>
+    <div id="water-surface"></div>
+    <svg id="boat-reflection" width="140" height="22" viewBox="0 0 140 22" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="70" cy="11" rx="62" ry="8" fill="#6b3a18" opacity=".5"/>
+    </svg>
+    <div id="boat-group">
+      <svg id="char-svg" width="140" height="100" viewBox="0 0 140 100"
+           xmlns="http://www.w3.org/2000/svg" style="position:absolute;bottom:20px;left:0;z-index:2" overflow="visible">
+        <defs>
+          <radialGradient id="skG" cx="50%" cy="38%" r="55%">
+            <stop offset="0%" stop-color="#fdd6a0"/><stop offset="100%" stop-color="#f0a860"/>
+          </radialGradient>
+          <linearGradient id="shG" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#4a9cf0"/><stop offset="100%" stop-color="#1d5fb8"/>
+          </linearGradient>
+          <linearGradient id="htG" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#d4a030"/><stop offset="100%" stop-color="#8a6010"/>
+          </linearGradient>
+        </defs>
+        <path d="M48,78 Q48,62 70,60 Q92,62 92,78 L90,90 Q70,95 50,90 Z" fill="url(#shG)"/>
+        <path d="M52,64 Q70,62 88,64 L88,70 Q70,68 52,70 Z" fill="rgba(255,255,255,.18)"/>
+        <rect x="48" y="82" width="44" height="5" rx="2.5" fill="#6a3e08"/>
+        <rect x="62" y="82" width="16" height="5" rx="2" fill="#c8880a"/>
+        <path d="M48,68 Q38,72 36,82 Q36,88 40,90 Q46,88 44,80 Q42,74 50,70 Z" fill="url(#shG)"/>
+        <ellipse cx="38" cy="89" rx="6" ry="6" fill="url(#skG)" stroke="#e89840" stroke-width=".6"/>
+        <path d="M92,68 Q100,64 104,56 Q108,50 106,44 Q102,42 100,48 Q98,56 92,62 Z" fill="url(#shG)"/>
+        <ellipse cx="106" cy="43" rx="6" ry="6" fill="url(#skG)" stroke="#e89840" stroke-width=".6"/>
+        <rect x="64" y="52" width="12" height="10" rx="5" fill="url(#skG)"/>
+        <ellipse cx="70" cy="40" rx="18" ry="16" fill="url(#skG)"/>
+        <path d="M52,40 Q52,24 70,22 Q88,24 88,40 Q85,32 70,30 Q55,32 52,40 Z" fill="#3a1e06"/>
+        <path d="M52,40 Q49,36 50,44 Q53,38 55,42 Z" fill="#3a1e06"/>
+        <path d="M88,40 Q91,36 90,44 Q87,38 85,42 Z" fill="#3a1e06"/>
+        <ellipse cx="63" cy="40" rx="4.5" ry="4.5" fill="#fff"/>
+        <ellipse cx="77" cy="40" rx="4.5" ry="4.5" fill="#fff"/>
+        <ellipse cx="64" cy="41" rx="2.8" ry="2.8" fill="#2a1008"/>
+        <ellipse cx="78" cy="41" rx="2.8" ry="2.8" fill="#2a1008"/>
+        <circle cx="65" cy="39.5" r="1.1" fill="#fff"/>
+        <circle cx="79" cy="39.5" r="1.1" fill="#fff"/>
+        <path d="M59,35.5 Q63,33.5 67,35.5" stroke="#3a1e06" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+        <path d="M73,35.5 Q77,33.5 81,35.5" stroke="#3a1e06" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+        <path d="M63,47 Q70,52 77,47" stroke="#b86020" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+        <ellipse cx="56" cy="44" rx="5" ry="3" fill="rgba(255,130,100,.2)"/>
+        <ellipse cx="84" cy="44" rx="5" ry="3" fill="rgba(255,130,100,.2)"/>
+        <ellipse cx="70" cy="26" rx="22" ry="5" fill="url(#htG)"/>
+        <path d="M56,26 Q56,12 70,10 Q84,12 84,26 Z" fill="url(#htG)"/>
+        <path d="M56,26 Q70,23 84,26 L84,30.5 Q70,27.5 56,30.5 Z" fill="rgba(0,0,0,.22)"/>
+        <path d="M60,22 Q70,19.5 80,22" stroke="rgba(255,220,120,.38)" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+      </svg>
+      <svg id="boat-svg" width="140" height="52" viewBox="0 0 140 52"
+           xmlns="http://www.w3.org/2000/svg" style="position:absolute;bottom:0;left:0;z-index:3">
+        <defs>
+          <linearGradient id="hullT" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#d4844a"/>
+            <stop offset="55%" stop-color="#a85e28"/>
+            <stop offset="100%" stop-color="#7a3e14"/>
+          </linearGradient>
+          <linearGradient id="hullS" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#8a4820"/>
+            <stop offset="100%" stop-color="#4e2408"/>
+          </linearGradient>
+          <linearGradient id="seatT" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#e0904e"/>
+            <stop offset="100%" stop-color="#a85e28"/>
+          </linearGradient>
+        </defs>
+        <path d="M6,20 Q10,10 24,8 L116,8 Q130,10 134,20 L124,44 Q70,52 16,44 Z" fill="url(#hullT)"/>
+        <path d="M16,44 L6,20 Q10,12 20,10 L19,18 Q10,20 12,40 Z" fill="url(#hullS)" opacity=".55"/>
+        <ellipse cx="70" cy="30" rx="50" ry="10" fill="#5a2e0a" opacity=".55"/>
+        <rect x="34" y="18" width="72" height="9" rx="3" fill="url(#seatT)"/>
+        <rect x="34" y="18" width="72" height="2.5" rx="1" fill="rgba(255,255,255,.22)"/>
+        <rect x="38" y="27" width="5" height="10" rx="1.5" fill="#6a3010"/>
+        <rect x="97" y="27" width="5" height="10" rx="1.5" fill="#6a3010"/>
+        <path d="M12,16 Q24,11 70,10 Q116,11 128,16" stroke="rgba(255,210,150,.5)" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M6,20 Q10,10 24,8 L116,8 Q130,10 134,20 L124,44 Q70,52 16,44 Z" fill="none" stroke="#4a2208" stroke-width="1.4"/>
+        <rect x="104" y="20" width="11" height="12" rx="3" fill="#3a5888"/>
+        <rect x="103" y="19" width="13" height="3" rx="1.5" fill="#4a68a8"/>
+        <circle cx="26" cy="30" r="7" fill="none" stroke="#9a7030" stroke-width="2.5" stroke-dasharray="3,2"/>
+        <circle cx="26" cy="30" r="3.5" fill="#7a5020"/>
+      </svg>
+      <div id="fm-rod"><div id="rod-tip-glow"></div></div>
+    </div>
+    <svg id="line-svg"><path id="line-path"/></svg>
+    <div id="bobber"></div>
+    <canvas id="fx-canvas"></canvas>
+    <div id="rarity-flash"></div>
+    <div id="location-bar"></div>
+    <button id="cast-btn" style="display:none">
+      <div class="cast-inner">
+        <span class="cast-text">🎣 CAST</span>
+        <span class="cast-sub">TAP TO FISH</span>
+      </div>
+    </button>
+    <div id="auto-fish-panel"></div>
+    <div id="bite-indicator">
+      <div class="bite-pulse">🎣</div>
+      <div class="bite-label">FISH ON! TAP!</div>
+    </div>
+  </div>
+
+  <!-- ══ OVERLAY SCREENS ══ -->
+  <div id="screen-home" class="overlay-screen">
+    <div id="profile-card-slot"></div>
+    <div class="home-banner">
+      <div class="home-title">🎣 FISHING CLASH</div>
+      <div class="home-sub">Idle Catch RPG · Cast. Catch. Conquer.</div>
+      <div class="xp-row">
+        <span class="xp-label">LV <span id="xp-lv">1</span></span>
+        <div class="xp-bar-wrap"><div class="xp-bar-fill" id="xp-bar" style="width:10%"></div></div>
+        <span class="xp-label" id="xp-nums">0/100</span>
+      </div>
+    </div>
+    <div class="sec-title">YOUR STATS</div>
+    <div class="stats-grid">
+      <div class="stat-card"><div class="sc-label">Total Caught</div><div class="sc-val" id="st-total">0</div><div class="sc-sub">fish lifetime</div></div>
+      <div class="stat-card"><div class="sc-label">Coins Earned</div><div class="sc-val" id="st-earned">0</div><div class="sc-sub">total gold</div></div>
+      <div class="stat-card"><div class="sc-label">Best Catch</div><div class="sc-val" id="st-best">—</div><div class="sc-sub">heaviest fish</div></div>
+      <div class="stat-card"><div class="sc-label">Location</div><div class="sc-val" id="st-loc">River</div><div class="sc-sub">current area</div></div>
+    </div>
+    <div class="sec-title">RECENT CATCHES</div>
+    <div class="recent-list" id="recent-list">
+      <div style="color:rgba(255,255,255,.3);font-size:12px;text-align:center;padding:22px">No catches yet — go fishing!</div>
+    </div>
+  </div>
+
+  <div id="screen-inventory" class="overlay-screen">
+    <div class="inv-header">
+      <div class="screen-title">🎒 INVENTORY</div>
+      <button class="sell-all-btn" id="btn-sell-all">SELL ALL</button>
+    </div>
+    <div class="filter-row">
+      <div class="fc on" data-f="all">All</div>
+      <div class="fc" data-f="common">Common</div>
+      <div class="fc" data-f="rare">Rare</div>
+      <div class="fc" data-f="epic">Epic</div>
+      <div class="fc" data-f="legendary">Legendary</div>
+    </div>
+    <div class="sec-title">FISH COLLECTION</div>
+    <div class="inv-grid" id="inv-grid">
+      <div style="grid-column:1/-1;color:rgba(255,255,255,.3);font-size:12px;text-align:center;padding:32px">Inventory is empty</div>
+    </div>
+  </div>
+
+  <div id="screen-shop" class="overlay-screen">
+    <div class="screen-title">🏪 SHOP</div>
+    <div class="shop-tabs">
+      <button class="st on" id="st-upgrades">⚙️ Upgrades</button>
+      <button class="st" id="st-rods">🎣 Rods</button>
+      <button class="st" id="st-premium">💎 Gems</button>
+      <button class="st" id="st-unlocks">🗝️ Unlocks</button>
+    </div>
+    <div class="upg-list" id="shop-content"></div>
+  </div>
+
+  <!-- ══ MINIGAME ══ -->
+  <div id="minigame-overlay">
+    <div class="fish-preview">
+      <div class="fp-icon" id="mg-icon">🐟</div>
+      <div class="fp-badge" id="mg-badge">COMMON</div>
+      <div class="fp-name" id="mg-name">River Trout</div>
+      <div class="fp-weight" id="mg-weight">0.0 kg</div>
+    </div>
+    <div class="tension-wrap">
+      <div class="tension-hdr"><span class="t-name">LINE TENSION</span><span class="t-pct" id="t-pct">50%</span></div>
+      <div id="tension-track">
+        <div id="tension-fill"></div>
+        <div id="fish-zone"></div>
+        <div id="t-cursor"></div>
+      </div>
+    </div>
+    <button id="hold-btn">🎣</button>
+  </div>
+
+  <!-- ══ CATCH RESULT ══ -->
+  <div id="catch-result">
+    <div id="cr-rarity-bg"></div>
+    <div class="cr-shine"></div>
+    <div class="cr-title" id="cr-title">CAUGHT!</div>
+    <div id="cr-fish-hero"></div>
+    <div class="cr-fish-name" id="cr-name">River Trout</div>
+    <div id="cr-rarity-badge">COMMON</div>
+    <div class="cr-details">
+      <div class="cr-d"><div class="cr-dl">Weight</div><div class="cr-dv" id="cr-wt">0.0 kg</div></div>
+      <div class="cr-d"><div class="cr-dl">Value</div><div class="cr-dv" id="cr-val">0 🪙</div></div>
+      <div class="cr-d"><div class="cr-dl">XP</div><div class="cr-dv" id="cr-xp">+0</div></div>
+    </div>
+    <div class="cr-actions">
+      <button class="cr-btn sell" id="cr-sell">💰 SELL</button>
+      <button class="cr-btn keep" id="cr-keep">🎒 KEEP</button>
+    </div>
+  </div>
+
+  <!-- ══ TOP HUD ══ -->
+  <div id="top-hud" style="display:none">
+    <div class="hud-pill"><span class="hud-icon">🪙</span><span class="hud-val" id="hud-coins">0</span></div>
+    <div class="hud-pill"><span class="hud-icon">💎</span><span class="hud-val gem" id="hud-gems">15</span></div>
+    <div class="hud-pill"><span class="hud-icon">⚡</span><span class="hud-val nrg" id="hud-nrg">50/50</span></div>
+    <div id="hud-lv">LV <span id="hud-level">1</span></div>
+  </div>
+
+  <!-- ══ BOTTOM NAV ══ -->
+  <div id="bottom-nav" style="display:none">
+    <div class="nav-bar">
+      <button class="nav-btn" id="nav-home"><span class="ni">🏠</span><span class="nl">Home</span></button>
+      <button class="nav-btn fish-btn" id="nav-fishing"><span class="ni">🎣</span><span class="nl">Fish</span></button>
+      <button class="nav-btn" id="nav-inventory"><span class="ni">🎒</span><span class="nl">Bag</span></button>
+      <button class="nav-btn" id="nav-shop"><span class="ni">🏪</span><span class="nl">Shop</span></button>
+    </div>
+  </div>
+
+  <div id="toast"></div>
+  <div id="save-indicator" style="display:none"><span class="save-spin">⟳</span><span id="save-text">SAVING</span></div>
+
+</div>
+
+<!-- JS modules — urutan penting -->
+<script src="js/data.js"></script>
+<script src="js/state.js"></script>
+<script src="js/audio.js"></script>
+<script src="js/fx.js"></script>
+<script src="js/render.js"></script>
+<script src="js/fishing.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
